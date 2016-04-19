@@ -12,8 +12,11 @@ cMask <- function(folder_name){
      #in Dhruv_code folder (C:\Users\Kenyon\Documents\Bacillus_subtilis\swarming plates\R swarming\Dhruv_code)
   # added second background subtraction, 4/14/16
   
+  #Example input photos and sample outputs can be found here-
+      # https://drive.google.com/open?id=0B6wJlSJAzF3wNV9Ha1FSNFhtNEU
+  
   #Necessary inputs:
-  # 1) Name of experiment folder  (folder_name)
+  # 1) Name of experiment folder  (folder_name) - ie, run > cMask("folder name")
       #1b) Needs to contain a folder named "grayscale"
   # 2) Directory path to experiment folder
   # 3) Need to have generated "Dmask", a mask that finds the 4 plates and removes the other areas of the photos,
@@ -73,10 +76,8 @@ cMask <- function(folder_name){
     para1 <- readImage(paste(picdir,"/",filelistL[x],sep=""))
     para<-para1*Dmask
     
-    
     #print number of images left to process
     print(paste0("---img #",(1+x-frst)," of ",(LL-frst+1),"---"))
-    
     
     # Background subtraction
     print("0. Background Subtraction")
@@ -85,7 +86,6 @@ cMask <- function(folder_name){
     #Subtract first generated image from all, after subtracting background image
     if(x==frst){pbg1<-paranobg}
     paranobg<-paranobg-pbg1
-    
     
     #create tiled images
     width<-dim(para)[1]/4   #dimension to be used for tiled image at end of loop
@@ -192,7 +192,6 @@ cMask <- function(folder_name){
       mask4out<-mask3out  }
    
    
-   
    #generate output image
    
    t1<-tile(combine(paraout,paraout2,filt2print,mask1out,mask3out,mask4out),nx = 3)
@@ -201,7 +200,6 @@ cMask <- function(folder_name){
    dir.create(t1_loc, showWarnings = FALSE)
    writeImage(t1, file=paste(t1_loc, paste0("img",x,"_",substr(filelistL[x],1,nchar(filelistL)-4),"_tile.png")
                              , sep="/"))
-   
    gc()
     
     
